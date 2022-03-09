@@ -453,6 +453,10 @@ class DragController {
     return _widgetState?._getCurrentPosition();
   }
 
+  bool? isDragging() {
+    return _widgetState?.dragging;
+  }
+
   /// Makes the widget visible
   void showWidget() {
     _widgetState?._showWidget();
