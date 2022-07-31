@@ -160,38 +160,37 @@ class _DraggableWidgetState extends State<DraggableWidget>
 
     widget.dragController?._addState(this);
 
-    if (WidgetsBinding.instance != null) {
-      WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
-        final widgetSize = getWidgetSize(key);
-        if (widgetSize != null) {
-          setState(() {
-            widgetHeight = widgetSize.height;
-            widgetWidth = widgetSize.width;
-          });
-        }
-
-        await Future.delayed(Duration(
-          milliseconds: 100,
-        ));
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final widgetSize = getWidgetSize(key);
+      if (widgetSize != null) {
         setState(() {
-          offstage = false;
-          boundary = MediaQuery.of(context).size.height - widget.bottomMargin;
-          if (widget.initialPosition == AnchoringPosition.bottomRight) {
-            top = boundary - widgetHeight + widget.statusBarHeight;
-            left = MediaQuery.of(context).size.width - widgetWidth;
-          } else if (widget.initialPosition == AnchoringPosition.bottomLeft) {
-            top = boundary - widgetHeight + widget.statusBarHeight;
-            left = 0;
-          } else if (widget.initialPosition == AnchoringPosition.topRight) {
-            top = widget.topMargin - widget.topMargin;
-            left = MediaQuery.of(context).size.width - widgetWidth;
-          } else {
-            top = widget.topMargin;
-            left = 0;
-          }
+          widgetHeight = widgetSize.height;
+          widgetWidth = widgetSize.width;
         });
+      }
+
+      await Future.delayed(Duration(
+        milliseconds: 100,
+      ));
+      setState(() {
+        offstage = false;
+        boundary = MediaQuery.of(context).size.height - widget.bottomMargin;
+        if (widget.initialPosition == AnchoringPosition.bottomRight) {
+          top = boundary - widgetHeight + widget.statusBarHeight;
+          left = MediaQuery.of(context).size.width - widgetWidth;
+        } else if (widget.initialPosition == AnchoringPosition.bottomLeft) {
+          top = boundary - widgetHeight + widget.statusBarHeight;
+          left = 0;
+        } else if (widget.initialPosition == AnchoringPosition.topRight) {
+          top = widget.topMargin - widget.topMargin;
+          left = MediaQuery.of(context).size.width - widgetWidth;
+        } else {
+          top = widget.topMargin;
+          left = 0;
+        }
       });
-    }
+    });
+
     super.initState();
   }
 
@@ -204,7 +203,7 @@ class _DraggableWidgetState extends State<DraggableWidget>
   @override
   void didUpdateWidget(DraggableWidget oldWidget) {
     if (offstage == false && WidgetsBinding.instance != null) {
-      WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         final widgetSize = getWidgetSize(key);
         if (widgetSize != null) {
           setState(() {
